@@ -8,6 +8,7 @@ import {
     ImageBackground,
     TextInput,
     Button,
+    ImageSourcePropType,
 } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import { Ctx } from './App';
@@ -61,6 +62,17 @@ const styles = StyleSheet.create({
         flexBasis: 0,
         gap: 25,
         backgroundColor: 'white',
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#3872FF',
+    },
+    item_img: {
+        width: 'auto',
+        height: 200,
+    },
+    item_text: {
+        fontSize: 20,
+        fontWeight: '500',
     },
     price: {
         fontWeight: '400',
@@ -86,12 +98,38 @@ interface CardProps {
     item: string;
 }
 
-const ITEM_SRC = {
-
+const ITEM_SRC: Record<string, ImageSourcePropType> = {
+    'Зеленые яблоки': require('./img/green-apple.webp'),
+    'Авокадо': require('./img/avokado.webp'),
+    'Замороженый шпинат': require('./img/spinach.webp'),
+    'Помидоры': require('./img/tomato.webp'),
+    'Огурцы': require('./img/cucember.webp'),
+    'Лимон': require('./img/lemon.webp'),
+    'Чеснок': require('./img/garlick.webp'),
+    'Клубника': require('./img/strawberry.webp'),
+    'Малина': require('./img/raspberry.webp'),
+    'Черника': require('./img/blueberries.webp'),
+    'Молоко': require('./img/milk.webp'),
+    'Кабачок': require('./img/eggplant.webp'),
+    'Лайм': require('./img/lime.webp'),
+    'Красные яблоки': require('./img/red-apple.webp'),
 };
 
-const ITEM_PRICE = {
-
+const ITEM_PRICE: Record<string, string> = {
+    'Зеленые яблоки': '100',
+    'Авокадо': '300',
+    'Замороженый шпинат': '50',
+    'Помидоры': '123',
+    'Огурцы': '321',
+    'Лимон': '721',
+    'Чеснок': '1',
+    'Клубника': '901',
+    'Малина': '1293',
+    'Черника': '139',
+    'Молоко': '218',
+    'Кабачок': '743',
+    'Лайм': '101',
+    'Красные яблоки': '13',
 }
 
 const Card = ({ item }: CardProps) => {
@@ -102,13 +140,13 @@ const Card = ({ item }: CardProps) => {
             style={styles.item}
             onTouchStart={() => ctrl.onItemChoose(item)}
         >
-            <Image src={""}/>
-            <Text>
+            <Image source={ITEM_SRC[item]} resizeMode='contain' style={styles.item_img}/>
+            <Text style={styles.item_text}>
                 {item}
             </Text>
             <View>
                 <Text style={styles.price}>
-                    123
+                    {ITEM_PRICE[item] || '123'} ₽
                 </Text>
             </View>
         </View>

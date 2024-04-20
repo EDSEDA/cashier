@@ -5,7 +5,7 @@ export type MessageHandler = [
     callback: (body: any) => void,
 ];
 
-const SEPARATOR = ':';
+const SEPARATOR = ';';
 
 
 export class WebSocketAdapter {

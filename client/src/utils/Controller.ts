@@ -34,9 +34,8 @@ export class Controller {
         this.adapter.sendMessage('addItem', JSON.stringify({ item }));
     }
 
-    private onUpdateItemsMessage = (itemsStr: string) => {
-        console.log(itemsStr);
-        const items = itemsStr.split(',');
+    private onUpdateItemsMessage = ({ items }: { items: string[]}) => {
+        console.log('Updating items');
         this.store.setIsLoading(false);
         this.store.setItems(items);
     }

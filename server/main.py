@@ -29,7 +29,7 @@ async def update_items(update_recommendation: UserRecommendationMessage):
         info(f'Sending recommendations: {update_recommendation}')
 
         connection = clients[update_recommendation.cash_register_id]
-        await connection.send(','.join(update_recommendation.recommendations))
+        await connection.send(f'updateItems{SEPARATOR}{json.dumps({ 'items': update_recommendation.recommendations})}')
 
         info(f'Recommendations sent: {update_recommendation}')
     except Exception as e:

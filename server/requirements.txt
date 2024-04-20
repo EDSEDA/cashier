@@ -1,3 +1,4 @@
 git+ssh://git@github.com/EDSEDA/api.git
 
-websocket-client==1.7.0
+asyncio==3.4.3
+websockets==12.0

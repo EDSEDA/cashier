@@ -35,7 +35,8 @@ export class Controller {
     }
 
     private onUpdateItemsMessage = ({ items }: { items: string[]}) => {
-        console.log('Updating items');
+        const decodedItems = items.map(item => decodeURIComponent(item))
+        console.log(`Updating items: '${decodedItems.join(',')}'`);
         this.store.setIsLoading(false);
         this.store.setItems(items);
     }

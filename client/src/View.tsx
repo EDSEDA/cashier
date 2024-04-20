@@ -99,13 +99,13 @@ const Card = ({ item }: CardProps) => {
             style={styles.item}
             onTouchStart={() => ctrl.onItemChoose(item)}
         >
-            <Image src={ITEM_SRC[item] || ""}/>
+            <Image src={""}/>
             <Text>
                 {item}
             </Text>
             <View>
-                <Text style={[styles.price, styles.__invalid]}>
-                    {ITEM_PRICE[item] || ""}
+                <Text style={styles.price}>
+                    123
                 </Text>
             </View>
         </View>

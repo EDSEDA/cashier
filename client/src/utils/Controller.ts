@@ -35,6 +35,7 @@ export class Controller {
     }
 
     private onUpdateItemsMessage = (itemsStr: string) => {
+        console.log(itemsStr);
         const items = itemsStr.split(',');
         this.store.setIsLoading(false);
         this.store.setItems(items);

@@ -12,7 +12,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import { Ctx } from './App';
 import React from 'react';
-import { Item } from './lib/Store';
+import { Item } from './utils/Store';
 
 const styles = StyleSheet.create({
     socketUrlForm: {

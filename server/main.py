@@ -29,7 +29,7 @@ async def update_items(update_recommendation: UserRecommendationMessage):
         info(f'Sending recommendations: {update_recommendation}')
 
         connection = clients[update_recommendation.cash_register_id]
-        await connection.send(update_recommendation.recommendations)
+        await connection.send(','.join(update_recommendation.recommendations))
 
         info(f'Recommendations sent: {update_recommendation}')
     except Exception as e:
@@ -55,24 +55,27 @@ async def connection_handler(websocket):
     clients[clients_map[websocket.host]] = websocket
     print(f"New client [{id}] connected: {websocket.remote_address}")
 
-    kafka_client.send_message(settings.CASHIER_INTERACTIONS_TOPIC, RequestUpdateMessage(
-        cash_register_id=id,
-    ))
+    # kafka_client.send_message(settings.CASHIER_INTERACTIONS_TOPIC, RequestUpdateMessage(
+    #     cash_register_id=id,
+    # ))
 
     try:
-        async for message in websocket:
-            parts = message.split(SEPARATOR)
-            if len(parts) < 2:
-                error(f'Invalid message {message}')
-                return
+        while True:
+            async for message in websocket:
+                if message == "Connection established":
+                    continue
+                parts = message.split(SEPARATOR)
+                if len(parts) < 2:
+                    error(f'Invalid message {message}')
+                    continue
 
-            event_name = parts[0]
-            data = json.loads(parts[1])
-            if event_name not in handlers:
-                error(f'No such event {event_name} with data {data}')
-                return
+                event_name = parts[0]
+                data = json.loads(parts[1])
+                if event_name not in handlers:
+                    error(f'No such event {event_name} with data {data}')
+                    continue
 
-            await handlers[event_name](data, id)
+                # await handlers[event_name](data, id)
 
     except websockets.ConnectionClosed:
         # Remove the disconnected client from the list

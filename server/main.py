@@ -12,24 +12,22 @@ from grifon.cashier.schema import RequestUpdateMessage, AddItemAndRequestUpdateM
 SEPARATOR = ':'
 
 next_id = 0
-def create_id():
-    global next_id
-    next_id = next_id + 1
-    return next_id - 1
+# def create_id():
+#     global next_id
+#     next_id = next_id + 1
+#     return next_id - 1
 
 
 kafka_client = KafkaClient("localhost:9092")
 
+clients_map = {'192.168.50.229': 1}
 clients = {}
-
-
 # Серверные ручки, триггерятся сообщениями кафки
 @kafka_client.register_topic_handler(settings.RECOMMENDATION_RESPONSE_TOPIC, msg_class=UserRecommendationMessage)
 async def update_items(update_recommendation: UserRecommendationMessage):
     try:
         info(f'Sending recommendations: {update_recommendation}')
 
-        print(clients)
         connection = clients[update_recommendation.cash_register_id]
         await connection.send(update_recommendation.recommendations)
 
@@ -54,8 +52,7 @@ handlers = {
 }
 
 async def connection_handler(websocket):
-    id = create_id()
-    clients[id] = websocket
+    clients[clients_map[websocket.host]] = websocket
     print(f"New client [{id}] connected: {websocket.remote_address}")
 
     kafka_client.send_message(settings.CASHIER_INTERACTIONS_TOPIC, RequestUpdateMessage(

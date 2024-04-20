@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 
 import { RecommendationPage } from './View';
-import { Store } from './Store';
-import { Controller } from './Controller';
+import { Store } from './lib/Store';
+import { Controller } from './lib/Controller';
 
 
 export interface Context {

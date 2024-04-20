@@ -12,7 +12,8 @@
     "react": "18.2.0",
     "react-native": "0.73.6",
     "mobx": "6.12.3",
-    "mobx-react-lite": "4.0.7"
+    "mobx-react-lite": "4.0.7",
+    "reconnecting-websocket": "^4.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

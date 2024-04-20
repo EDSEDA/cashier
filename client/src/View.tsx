@@ -115,6 +115,7 @@ const Card = ({ item }: CardProps) => {
 
 export const RecommendationPage = observer(() => {
     const { store, ctrl } = React.useContext(Ctx);
+    const { items } = store;
 
     return (
         <SafeAreaView>
@@ -151,8 +152,8 @@ export const RecommendationPage = observer(() => {
                     )
                     : (
                         <View style={styles.items}>
-                            {store.items && store.items.map(item => <Card key={item} item={item}/>)}
-                            {!store.items && (
+                            {items && items.map(item => <Card key={item} item={item}/>)}
+                            {!items && (
                                 <Text>
                                     Loading...
                                 </Text>

@@ -14,15 +14,25 @@ export interface Context {
 export const Ctx = React.createContext<Context>(null!);
 
 
-function App() {
-    const store = new Store();
-    const ctrl = new Controller(store);
+class App extends React.Component {
 
-    return (
-        <Ctx.Provider value={{ store, ctrl }}>
-            <RecommendationPage/>
-        </Ctx.Provider>
-    );
+    private store: Store;
+    private ctrl: Controller;
+
+    constructor(props: {}) {
+        super(props);
+        this.store = new Store();
+        this.ctrl = new Controller(this.store, () => this.forceUpdate());
+    }
+
+    render(): React.ReactNode {
+
+        return (
+            <Ctx.Provider value={{ store: this.store, ctrl: this.ctrl }}>
+                <RecommendationPage/>
+            </Ctx.Provider>
+        );
+    }
 }
 
 export default App;

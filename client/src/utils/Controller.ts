@@ -8,9 +8,11 @@ export interface UpdateItemsMessage {
 export class Controller {
     private store: Store;
     private adapter: WebSocketAdapter;
+    private forceRerender: () => void;
 
-    constructor(store: Store) {
+    constructor(store: Store, forceRerender: () => void) {
         this.store = store;
+        this.forceRerender = forceRerender;
     }
 
     setWebsocketUrl = (url: string) => {
@@ -30,14 +32,13 @@ export class Controller {
         if (!this.adapter) {
             return;
         }
-        this.store.setIsLoading(true);
         this.adapter.sendMessage('addItem', JSON.stringify({ item }));
     }
 
     private onUpdateItemsMessage = ({ items }: { items: string[]}) => {
         const decodedItems = items.map(item => decodeURIComponent(item))
         console.log(`Updating items: '${decodedItems.join(',')}'`);
-        this.store.setIsLoading(false);
         this.store.setItems(items);
+        this.forceRerender();
     }
 }

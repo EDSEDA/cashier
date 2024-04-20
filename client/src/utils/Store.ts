@@ -14,7 +14,7 @@ export interface Item {
 export class Store {
     isLoading = true;
     items?: string[];
-    url: string = '';
+    url: string = 'ws://192.168.50.229:8765';
     isChoosingUrl = true;
 
 

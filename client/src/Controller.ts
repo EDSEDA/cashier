@@ -11,7 +11,7 @@ export class Controller {
 
     constructor(store: Store) {
         this.store = store;
-        this.adapter = new WebSocketAdapter('ws://localhost:8765');
+        this.adapter = new WebSocketAdapter('ws://192.168.50.229:8765');
         this.adapter.addEventListener('updateItems', this.onUpdateItemsMessage);``
     }
 

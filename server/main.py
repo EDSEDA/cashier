@@ -13,13 +13,14 @@ SEPARATOR = ':'
 
 next_id = 0
 def create_id():
+    global next_id
     next_id = next_id + 1
     return next_id - 1
 
 
 kafka_client = KafkaClient("localhost:9092")
 
-clients = map()
+clients = {}
 
 
 # Серверные ручки, триггерятся сообщениями кафки
@@ -28,12 +29,13 @@ async def update_items(update_recommendation: UserRecommendationMessage):
     try:
         info(f'Sending recommendations: {update_recommendation}')
 
+        print(clients)
         connection = clients[update_recommendation.cash_register_id]
         await connection.send(update_recommendation.recommendations)
 
         info(f'Recommendations sent: {update_recommendation}')
     except Exception as e:
-        error(e)
+        info(f'Error code: {e}')
 
 
 # хендлеры клиентских сообщений, отправляют сообщения в кафку
@@ -62,8 +64,8 @@ async def connection_handler(websocket):
 
     try:
         async for message in websocket:
-            parts = message.decode('utf-8').split(SEPARATOR)
-            if parts.length < 2:
+            parts = message.split(SEPARATOR)
+            if len(parts) < 2:
                 error(f'Invalid message {message}')
                 return
 
@@ -82,8 +84,9 @@ async def connection_handler(websocket):
 
 
 async def main():
-    async with websockets.serve(connection_handler, "localhost", 8765):
-        asyncio.Future()
+    async with websockets.serve(connection_handler, "192.168.50.229", 8765):
+        await kafka_client.start_handling()
+        # await asyncio.Future()
 
 
 if __name__ == "__main__":
